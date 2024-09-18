@@ -1,0 +1,37 @@
+//Hilos Asincrónicos: Simulación de Descarga de Archivos //
+//VERSION 1//
+//EQUIPO: MIOPÍA//
+//INTEGRANTES://
+//GONZÁLEZ ESCALANTE KEVIN JEREMY //
+//HERNÁNDEZ ALVIRDE MARÍA GUADALUPE//
+//DÍAZ CASTAÑAREZ AILTON DAVID//
+//PÉREZ OLIVARES JÓSE JULIO//
+
+
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+void* descargar_archivo(void* archivo) {
+    char* nombre_archivo = (char*) archivo;
+    printf("Descargando archivo: %s...\n", nombre_archivo);
+    sleep(3); // Simula el tiempo de descarga
+    printf("Archivo %s descargado\n", nombre_archivo);
+    return NULL;
+}
+
+int main() {
+    pthread_t hilos[4];
+    char* archivos[] = {"archivo1.zip", "archivo2.zip", "archivo3.zip", "archivo4.zip"};
+
+    for (int i = 0; i < 4; i++) {
+        pthread_create(&hilos[i], NULL, descargar_archivo, (void*) archivos[i]);
+    }
+
+    for (int i = 0; i < 4; i++) {
+        pthread_join(hilos[i], NULL);
+    }
+
+    printf("Todas las descargas han finalizado.\n");
+    return 0;
+}
