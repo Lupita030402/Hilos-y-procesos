@@ -1,0 +1,37 @@
+//Hilos Ligeros: Procesamiento de Solicitudes en un Servidor Web //
+//VERSION 1//
+//EQUIPO: MIOPÍA//
+//INTEGRANTES://
+//GONZÁLEZ ESCALANTE KEVIN JEREMY //
+//HERNÁNDEZ ALVIRDE MARÍA GUADALUPE//
+//DÍAZ CASTAÑAREZ AILTON DAVID//
+//PÉREZ OLIVARES JÓSE JULIO//
+
+
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+
+void* procesar_solicitud(void* cliente) {
+    int id_cliente = ((int) cliente);
+    printf("Procesando solicitud del cliente %d\n", id_cliente);
+    sleep(1); // Simulamos el procesamiento
+    printf("Solicitud del cliente %d procesada\n", id_cliente);
+    return NULL;
+}
+
+int main() {
+    pthread_t hilos[5];
+    int ids[5] = {1, 2, 3, 4, 5};
+
+    for (int i = 0; i < 5; i++) {
+        pthread_create(&hilos[i], NULL, procesar_solicitud, (void*) &ids[i]);
+    }
+
+    for (int i = 0; i < 5; i++) {
+        pthread_join(hilos[i], NULL);
+    }
+
+    printf("Todas las solicitudes han sido procesadas.\n");
+    return 0;
+}
